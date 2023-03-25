@@ -8,14 +8,13 @@ from telegram import Update, Message
 from telegram.ext import Application, CommandHandler, ContextTypes, MessageHandler, filters
 
 users: dict[int, Chatbot] = {}
-
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("main")
 
 
 def cache_chat_bot(user_id: int):
     if user_id not in users:
         users[user_id] = Chatbot(config={
-            "access_token": config.env.GPT_ACCESS_TOKEN,
+            "access_token": config.env["GPT_ACCESS_TOKEN"],
             "model": "gpt-4",
         })
 
@@ -97,7 +96,7 @@ async def ask_gpt(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 def main() -> None:
     """Start the bot."""
     # Create the Application and pass it your bot's token.
-    application = Application.builder().token(config.env.TG_TOKEN).build()
+    application = Application.builder().token(config.env["TG_TOKEN"]).build()
 
     # on different commands - answer in Telegram
     application.add_handler(CommandHandler("start", start))

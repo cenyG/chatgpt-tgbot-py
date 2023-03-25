@@ -1,19 +1,19 @@
 import logging
 
-from revChatGPT.V1 import Chatbot
+from revChatGPT.V1 import AsyncChatbot
 
 import config
 
 from telegram import Update, Message
 from telegram.ext import Application, CommandHandler, ContextTypes, MessageHandler, filters
 
-users: dict[int, Chatbot] = {}
+users: dict[int, AsyncChatbot] = {}
 logger = logging.getLogger("main")
 
 
 def cache_chat_bot(user_id: int):
     if user_id not in users:
-        users[user_id] = Chatbot(config={
+        users[user_id] = AsyncChatbot(config={
             "access_token": config.env["GPT_ACCESS_TOKEN"],
             "model": "gpt-4",
         })
@@ -50,7 +50,7 @@ async def ask_gpt(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     msg = ""
 
     try:
-        for data in chat.ask(update.message.text):
+        async for data in chat.ask(update.message.text):
             msg = data["message"]
             if msg == "":
                 continue

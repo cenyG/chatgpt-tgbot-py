@@ -1,16 +1,20 @@
 ### Simplest GPT Chat-bot Proxy
 
-#### Shortcuts:
+To run it you have to create `.env` file with variables like in `.env.example`
+
+#### Run localy:
+```bash
+#Install dependencies
+pip install -r rq.txt
+
+#Run
+python main.py
+```
+
+#### Run with docker:
 ```bash
 #Build image
 docker build .
 
 #Run container
 docker run --rm -d <IMAGE_HASH>
-
-#Run for testing
-docker run -it --rm --entrypoint bash <IMAGE_HASH>
-
-#Docker rm all containers
-docker rm $(docker ps -aq)
-```
